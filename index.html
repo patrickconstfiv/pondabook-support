@@ -2,16 +2,639 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PondaBook Support</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Developer Support">
+  <title>Developer Support</title>
   <style>
-    body { font-family: -apple-system, sans-serif; text-align: center; margin: 50px; }
-    h1 { color: #1D4730; }
-    p { font-size: 16px; }
+    :root {
+      --bg: #fcfcfd;
+      --surface: #ffffff;
+      --surface-soft: #f5f7fa;
+      --line: #e7ebf0;
+      --text: #111827;
+      --muted: #667085;
+      --accent: #1f6fff;
+      --accent-soft: #eef4ff;
+      --shadow: 0 18px 48px rgba(17, 24, 39, 0.06);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 16px;
+      --max-width: 1120px;
+      --title-font: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --body-font: "SF Pro Display", "Avenir Next", "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(31, 111, 255, 0.05), transparent 24%),
+        linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+      font-family: var(--body-font);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .shell {
+      width: min(calc(100% - 32px), var(--max-width));
+      margin: 0 auto;
+      padding: 20px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .brand-copy strong,
+    .hero-copy h1,
+    .section-title h2 {
+      font-family: var(--title-font);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-size: 1rem;
+    }
+
+    .brand-copy span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      gap: 8px;
+      padding: 4px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+    }
+
+    .lang-switch button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .lang-switch button.is-active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 4px 12px rgba(17, 24, 39, 0.06);
+    }
+
+    .hero,
+    .section {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 20px;
+      padding: 28px;
+    }
+
+    .hero-copy h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      line-height: 0.96;
+      max-width: 9ch;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      max-width: 54ch;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button,
+    .button-secondary,
+    .app-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: 160ms ease;
+    }
+
+    .button {
+      color: #ffffff;
+      background: var(--accent);
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      background: #145de0;
+      outline: none;
+    }
+
+    .button-secondary,
+    .app-link {
+      color: var(--text);
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+    }
+
+    .button-secondary:hover,
+    .app-link:hover,
+    .button-secondary:focus-visible,
+    .app-link:focus-visible {
+      background: #eef2f7;
+      outline: none;
+    }
+
+    .support-panel {
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .support-panel h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .support-panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .support-email {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 72px;
+      padding: 16px 18px;
+      border-radius: var(--radius-lg);
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.04);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 700;
+      word-break: break-all;
+      text-align: center;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .quick-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+
+    .quick-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .quick-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    .section {
+      margin-top: 22px;
+      padding: 24px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 48ch;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .app-card {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 16px;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .app-icon {
+      width: 96px;
+      height: 96px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(17, 24, 39, 0.05);
+    }
+
+    .app-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .app-body h3 {
+      margin: 2px 0 8px;
+      font-size: 1.1rem;
+    }
+
+    .app-body p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    .app-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .app-grid,
+      .quick-links {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar,
+      .section-title,
+      .app-card {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding: 22px;
+      }
+
+      .section {
+        padding: 20px;
+      }
+
+      .hero-copy h1 {
+        max-width: none;
+      }
+
+      .hero-actions,
+      .app-actions {
+        width: 100%;
+      }
+
+      .button,
+      .button-secondary,
+      .app-link {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>PondaBook Support</h1>
-  <p>Need help? Contact us at <a href="mailto:patrickconstfiv@gmail.com">patrickconstfiv@gmail.com</a></p>
-  <p>FAQ and guidance coming soon.</p>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">DS</div>
+        <div class="brand-copy">
+          <strong data-i18n="brandTitle">Developer Support</strong>
+          <span data-i18n="brandSubtitle">Support contact and app access</span>
+        </div>
+      </div>
+      <div class="lang-switch" aria-label="Language switch">
+        <button type="button" class="is-active" data-lang-button="en">EN</button>
+        <button type="button" data-lang-button="zh-Hans">简中</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="hero-copy">
+          <h1 data-i18n="heroTitle">Developer Support</h1>
+          <p data-i18n="heroText">
+            Contact the developer, browse our apps, and jump to available App Store pages.
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <a class="button" href="mailto:patrickconstfiv@gmail.com?subject=Developer%20Support" data-i18n="emailButton">Email Support</a>
+          <a class="button-secondary" href="#apps" data-i18n="appsButton">Browse Apps</a>
+        </div>
+
+        <div class="quick-links">
+          <a class="quick-card" href="mailto:patrickconstfiv@gmail.com?subject=Developer%20Support">
+            <strong data-i18n="quickEmailTitle">Support Email</strong>
+            <p data-i18n="quickEmailText">Direct contact for product questions and support.</p>
+          </a>
+          <a class="quick-card" href="#apps">
+            <strong data-i18n="quickAppsTitle">Apps</strong>
+            <p data-i18n="quickAppsText">A simple list of current products.</p>
+          </a>
+          <a class="quick-card" href="https://apps.apple.com/app/id6755175201" target="_blank" rel="noreferrer">
+            <strong data-i18n="quickStoreTitle">App Store</strong>
+            <p data-i18n="quickStoreText">Open the App Store page for PondaBook.</p>
+          </a>
+        </div>
+      </div>
+
+      <aside class="support-panel" aria-label="Support Email">
+        <div>
+          <h2 data-i18n="panelTitle">Email</h2>
+          <p data-i18n="panelText">For support, feedback, or business contact.</p>
+        </div>
+        <a class="support-email" href="mailto:patrickconstfiv@gmail.com?subject=Developer%20Support">
+          patrickconstfiv@gmail.com
+        </a>
+      </aside>
+    </section>
+
+    <section class="section" id="apps">
+      <div class="section-title">
+        <div>
+          <h2 data-i18n="appsSectionTitle">Apps</h2>
+        </div>
+        <p data-i18n="appsSectionText">A concise overview of current products.</p>
+      </div>
+
+      <div class="app-grid">
+        <article class="app-card">
+          <div class="app-icon">
+            <img src="./assets/apps/PondaBook.png" alt="PondaBook icon">
+          </div>
+          <div class="app-body">
+            <h3>PondaBook</h3>
+            <p data-i18n="pondabookDesc">A project-based ledger for life events and shared planning.</p>
+            <div class="app-actions">
+              <a class="app-link" href="https://apps.apple.com/app/id6755175201" target="_blank" rel="noreferrer" data-i18n="viewOnStore">View on App Store</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <div class="app-icon">
+            <img src="./assets/apps/SeaNote.png" alt="SeaNote icon">
+          </div>
+          <div class="app-body">
+            <h3>SeaNote</h3>
+            <p data-i18n="seanoteDesc">An expiry reminder for food and medicine.</p>
+            <div class="app-actions">
+              <a class="app-link" href="mailto:patrickconstfiv@gmail.com?subject=SeaNote" data-i18n="contactForDetails">Contact for details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <div class="app-icon">
+            <img src="./assets/apps/Cookey.png" alt="Cookey icon">
+          </div>
+          <div class="app-body">
+            <h3>Cookey</h3>
+            <p data-i18n="cookeyDesc">A personal recipe and cooking record app.</p>
+            <div class="app-actions">
+              <a class="app-link" href="mailto:patrickconstfiv@gmail.com?subject=Cookey" data-i18n="contactForDetails">Contact for details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <div class="app-icon">
+            <img src="./assets/apps/CutCat.jpg" alt="CutCat icon">
+          </div>
+          <div class="app-body">
+            <h3>CutCat</h3>
+            <p data-i18n="cutcatDesc">A screenshot export tool for App Store marketing assets.</p>
+            <div class="app-actions">
+              <a class="app-link" href="mailto:patrickconstfiv@gmail.com?subject=CutCat" data-i18n="contactForDetails">Contact for details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="app-card">
+          <div class="app-icon">
+            <img src="./assets/apps/BeaverValley.png" alt="BeaverValley icon">
+          </div>
+          <div class="app-body">
+            <h3>BeaverValley</h3>
+            <p data-i18n="beaverDesc">More information is available through developer support.</p>
+            <div class="app-actions">
+              <a class="app-link" href="mailto:patrickconstfiv@gmail.com?subject=BeaverValley" data-i18n="contactForDetails">Contact for details</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span data-i18n="footerText">Developer Support</span>
+    </footer>
+  </main>
+
+  <script>
+    const translations = {
+      en: {
+        pageTitle: "Developer Support",
+        pageDescription: "Developer Support",
+        brandTitle: "Developer Support",
+        brandSubtitle: "Support contact and app access",
+        heroTitle: "Developer Support",
+        heroText: "Contact the developer, browse our apps, and jump to available App Store pages.",
+        emailButton: "Email Support",
+        appsButton: "Browse Apps",
+        quickEmailTitle: "Support Email",
+        quickEmailText: "Direct contact for product questions and support.",
+        quickAppsTitle: "Apps",
+        quickAppsText: "A simple list of current products.",
+        quickStoreTitle: "App Store",
+        quickStoreText: "Open the App Store page for PondaBook.",
+        panelTitle: "Email",
+        panelText: "For support, feedback, or business contact.",
+        appsSectionTitle: "Apps",
+        appsSectionText: "A concise overview of current products.",
+        pondabookDesc: "A project-based ledger for life events and shared planning.",
+        seanoteDesc: "An expiry reminder for food and medicine.",
+        cookeyDesc: "A personal recipe and cooking record app.",
+        cutcatDesc: "A screenshot export tool for App Store marketing assets.",
+        beaverDesc: "More information is available through developer support.",
+        viewOnStore: "View on App Store",
+        contactForDetails: "Contact for details",
+        footerText: "Developer Support"
+      },
+      "zh-Hans": {
+        pageTitle: "开发者支持",
+        pageDescription: "开发者支持",
+        brandTitle: "开发者支持",
+        brandSubtitle: "支持邮箱与产品入口",
+        heroTitle: "开发者支持",
+        heroText: "在这里联系开发者、查看产品，并快速进入可用的 App Store 页面。",
+        emailButton: "联系支持",
+        appsButton: "查看产品",
+        quickEmailTitle: "支持邮箱",
+        quickEmailText: "用于产品咨询、问题反馈与支持联系。",
+        quickAppsTitle: "产品列表",
+        quickAppsText: "简洁查看当前产品。",
+        quickStoreTitle: "App Store",
+        quickStoreText: "直接打开 PondaBook 的 App Store 页面。",
+        panelTitle: "邮箱",
+        panelText: "用于支持、反馈或商务联系。",
+        appsSectionTitle: "产品",
+        appsSectionText: "当前产品的简洁展示。",
+        pondabookDesc: "面向重要生活项目与共同规划的项目式账本。",
+        seanoteDesc: "用于食品和药品到期提醒的工具。",
+        cookeyDesc: "记录菜谱与做饭过程的个人应用。",
+        cutcatDesc: "面向 App Store 营销素材的截图导出工具。",
+        beaverDesc: "更多信息可通过开发者支持邮箱联系获取。",
+        viewOnStore: "前往 App Store",
+        contactForDetails: "联系了解",
+        footerText: "开发者支持"
+      }
+    };
+
+    const nodes = document.querySelectorAll("[data-i18n]");
+    const langButtons = document.querySelectorAll("[data-lang-button]");
+
+    function applyLanguage(lang) {
+      const locale = translations[lang] ? lang : "en";
+      const dict = translations[locale];
+
+      document.documentElement.lang = locale === "zh-Hans" ? "zh-CN" : "en";
+      document.title = dict.pageTitle;
+      document.querySelector('meta[name="description"]').setAttribute("content", dict.pageDescription);
+
+      nodes.forEach((node) => {
+        const key = node.getAttribute("data-i18n");
+        if (dict[key]) {
+          node.textContent = dict[key];
+        }
+      });
+
+      langButtons.forEach((button) => {
+        button.classList.toggle("is-active", button.getAttribute("data-lang-button") === locale);
+      });
+    }
+
+    langButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const nextLang = button.getAttribute("data-lang-button");
+        localStorage.setItem("developer-support-lang", nextLang);
+        applyLanguage(nextLang);
+      });
+    });
+
+    const savedLang = localStorage.getItem("developer-support-lang");
+    const defaultLang = savedLang || (navigator.language && navigator.language.toLowerCase().startsWith("zh") ? "zh-Hans" : "en");
+    applyLanguage(defaultLang);
+  </script>
 </body>
 </html>
